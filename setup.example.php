@@ -4,27 +4,27 @@
 * Account information
 ***********************/
 
-define('GOOGLE_APPLICATION_NAME', 
+define('GOOGLE_APPLICATION_NAME',
 	'Example Analytics');
-define('GOOGLE_CLIENT_EMAIL', 
+define('GOOGLE_CLIENT_EMAIL',
 	'EXAMPLE@developer.gserviceaccount.com');
-define('GOOGLE_USER_EMAIL', 
+define('GOOGLE_USER_EMAIL',
 	'EXAMPLE@gmail.com');
 
 // Appears under "View Settings" in "Admin" section for your analytics as "View ID"
-define('GOOGLE_ANALYTICS_PROFILE_ID', 
+define('GOOGLE_ANALYTICS_PROFILE_ID',
 	'1111111');
 
 // Appears at the end of the URL when logged into your Analytics page. Example:
 // https://www.google.com/analytics/web/?hl=en#report/visitors-overview/a1111111w2222222p3333333/
-define('GOOGLE_ANALYTICS_WEB_ID', 
+define('GOOGLE_ANALYTICS_WEB_ID',
 	'a1111111w2222222p3333333');
 
-// Make an incoming webhook here: 
+// Make an incoming webhook here:
 // https://YOURSLACK.slack.com/services/new/incoming-webhook
-define('SLACK_WEBHOOK_URL', 
+define('SLACK_WEBHOOK_URL',
 	'https://EXAMPLE.slack.com/services/hooks/incoming-webhook?token=EXAMPLE');
-define('YOUR_DOMAIN', 
+define('YOUR_DOMAIN',
 	'http://example.com');
 
 
@@ -52,7 +52,6 @@ $cred = new Google_Auth_AssertionCredentials(
   array('https://www.googleapis.com/auth/analytics.readonly'),
   $key
 );
-$cred->sub = GOOGLE_USER_EMAIL;
 $client->setAssertionCredentials($cred);
 
 ?>
