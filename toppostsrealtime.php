@@ -35,14 +35,10 @@ function createDigest(&$analytics) {
           $topPosts .= "\n<https://www.google.com/analytics/web/?hl=en#realtime/rt-content/".GOOGLE_ANALYTICS_WEB_ID."/%3Ffilter.list%3D10%3D%3D".urlencode($pagePaths[$count][0])."|".$pagePaths[$count][1].">\t<".YOUR_DOMAIN.$pagePaths[$count][0]."|".str_replace( ".html", "", preg_replace('/\/\d+\/\d+\/\d+\//', '', $pagePaths[$count][0]) ).">";
       }
 
-
       $message = "Current users on the site: <https://www.google.com/analytics/web/?hl=en#realtime/rt-overview/".GOOGLE_ANALYTICS_WEB_ID."/|$totalActiveUsers>\n\nTop posts:\n".$topPosts;
 
-      // echo $message;
-
       // Step 4. Output the results.
-      // slackMessage($message, "#general");
-      slackMessage($message, "#analytics");
+      slackMessage($message, SLACK_NOTIFICATION_CHANNEL);
     }
 
   } catch (apiServiceException $e) {
