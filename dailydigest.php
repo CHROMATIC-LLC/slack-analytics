@@ -34,9 +34,8 @@ function createDigest(&$analytics) {
 
       $message = "DAILY DIGEST: Yesterday (".$yesterday->format('l')."), we did <https://www.google.com/analytics/web/?hl=en#report/visitors-overview/".GOOGLE_ANALYTICS_WEB_ID."/%3F_u.date00%3D".$yesterday->format('Ymd')."%26_u.date01%3D".$yesterday->format('Ymd')."%26overview-graphOptions.selected%3Danalytics.nthHour/|".floor($yesterday_pageviews/1000)."k pageviews>. Last ".$lastweek->format('l').", we did <https://www.google.com/analytics/web/?hl=en#report/visitors-overview/".GOOGLE_ANALYTICS_WEB_ID."/%3F_u.date00%3D".$lastweek->format('Ymd')."%26_u.date01%3D".$lastweek->format('Ymd')."%26overview-graphOptions.selected%3Danalytics.nthHour/|".floor($lastweek_pageviews/1000)."k pageviews> (".($yesterday_pageviews-$lastweek_pageviews > 1000 ? "+" : "" ).floor( ($yesterday_pageviews-$lastweek_pageviews)/1000 )."k).";
 
-      // Step 4. Output the results. Add your custom channels here
-      slackMessage($message, "#general");
-      // slackMessage($message, "#analytics");
+      // Step 4. Output the results.
+      slackMessage($message, SLACK_NOTIFICATION_CHANNEL);
     }
 
   } catch (apiServiceException $e) {

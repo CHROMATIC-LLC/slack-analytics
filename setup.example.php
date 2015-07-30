@@ -26,6 +26,7 @@ define('SLACK_WEBHOOK_URL',
 	'https://EXAMPLE.slack.com/services/hooks/incoming-webhook?token=EXAMPLE');
 define('YOUR_DOMAIN',
 	'http://example.com');
+define('SLACK_NOTIFICATION_CHANNEL', '#general');
 
 
 set_include_path( get_include_path() . PATH_SEPARATOR . dirname(__FILE__) );
