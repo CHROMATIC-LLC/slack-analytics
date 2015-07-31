@@ -28,6 +28,9 @@ define('YOUR_DOMAIN',
 	'http://example.com');
 define('SLACK_NOTIFICATION_CHANNEL', '#general');
 
+// TRUE if you wish to round to the thousands of visits, else FALSE.
+define('PAGEVIEWS_DISPLAY_IN_THOUSANDS', TRUE);
+
 
 set_include_path( get_include_path() . PATH_SEPARATOR . dirname(__FILE__) );
 
