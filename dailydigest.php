@@ -4,12 +4,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+include_once('src/autoload.php');
 include_once('setup.php');
 include_once('functions.php');
 
 createDigest($analytics);
-
-
 
 function createDigest(&$analytics) {
   try {
@@ -23,7 +22,8 @@ function createDigest(&$analytics) {
       $yesterday->sub(new DateInterval('P1D'));
 
       $yesterday_pageviews = pageviewsForDates($analytics, $profileId, $yesterday->format('Y-m-d'), $yesterday->format('Y-m-d'));
-      $yesterday_pageviews_output = PAGEVIEWS_DISPLAY_IN_THOUSANDS ? floor($yesterday_pageviews / 1000) . "k" : $yesterday_pageviews;
+      $yesterday_count_converter = new CountConverter($yesterday_pageviews, PAGEVIEWS_DISPLAY_IN_THOUSANDS);
+      $yesterday_pageviews_output = $yesterday_count_converter->convertCount();
 
       $yesterday->sub(new DateInterval('P1D'));
 
@@ -31,7 +31,8 @@ function createDigest(&$analytics) {
       $lastweek->sub(new DateInterval('P8D'));
 
       $lastweek_pageviews = pageviewsForDates($analytics, $profileId, $lastweek->format('Y-m-d'), $lastweek->format('Y-m-d'));
-      $lastweek_pageviews_output = PAGEVIEWS_DISPLAY_IN_THOUSANDS ? floor($lastweek_pageviews / 1000) . "k" : $lastweek_pageviews;
+      $lastweek_count_converter = new CountConverter($lastweek_pageviews, PAGEVIEWS_DISPLAY_IN_THOUSANDS);
+      $lastweek_pageviews_output = $lastweek_count_converter->convertCount();
 
       $message = "DAILY DIGEST: ";
       $message .= "Yesterday (" . $yesterday->format('l') . "), we did <https://www.google.com/analytics/web/?hl=en#report/visitors-overview/" . GOOGLE_ANALYTICS_WEB_ID . "/%3F_u.date00%3D" . $yesterday->format('Ymd') . "%26_u.date01%3D" . $yesterday->format('Ymd') . "%26overview-graphOptions.selected%3Danalytics.nthHour/|" . $yesterday_pageviews_output . " pageviews>.";
@@ -67,6 +68,3 @@ function pageviewsForDates(&$analytics, $profileId, $start_date, $end_date) {
 
    return $result->rows[0][0];
 }
-
-
-?>

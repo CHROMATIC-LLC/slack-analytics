@@ -1,0 +1,14 @@
+sudo: false
+language: php
+php:
+- 5.6
+before_script:
+- composer install
+script:
+- "./vendor/bin/phpcs --extensions='php,inc,test' --ignore=Google/*,google-api-php-client/*,*vendor/* ."
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+  # slack:
+    # secure: Oy9Mzy8dBb9usMBOId4+ZnZSNCaC5ZWkl4XcDeRU1wVcyc+FZpEgov4LE6AgSTj6eMpXlRwJMxpI/Wr9jannyF5CogidJ11+xIBX6pUvdY4L5CmFtVEH7fS93tmyU5+gRbwYS7nK0OmU42EZIKwXH3I4ZUDU1ZNNjtv4ihvus6o=

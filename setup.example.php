@@ -57,5 +57,3 @@ $cred = new Google_Auth_AssertionCredentials(
   $key
 );
 $client->setAssertionCredentials($cred);
-
-?>
