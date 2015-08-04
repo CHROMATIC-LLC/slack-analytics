@@ -46,7 +46,7 @@ $client->setApplicationName(GOOGLE_APPLICATION_NAME);
 // Replace this with the service you are using.
 $analytics = new Google_Service_Analytics($client);
 
-$key_file_location = dirname(__FILE__).'/privatekey.p12';
+$key_file_location = __DIR__ . '/../privatekey.p12';
 // This file location should point to the private key file.
 $key = file_get_contents($key_file_location);
 $cred = new Google_Auth_AssertionCredentials(

@@ -4,7 +4,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include_once('src/autoload.php');
+include_once('autoload.php');
 include_once('setup.php');
 include_once('functions.php');
 
@@ -46,7 +46,7 @@ function createDigest(&$analytics) {
       }
 
       // Step 4. Output the results.
-      slackMessage($message, SLACK_NOTIFICATION_CHANNEL);
+      // slackMessage($message, SLACK_NOTIFICATION_CHANNEL);
     }
 
   } catch (apiServiceException $e) {
