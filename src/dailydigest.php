@@ -26,7 +26,8 @@ function create_digest(&$analytics) {
       $yesterday = new DateTime();
       $yesterday->sub(new DateInterval('P1D'));
 
-      $yesterday_pageviews = pageviews_for_dates($analytics, $profile_id, $yesterday->format('Y-m-d'), $yesterday->format('Y-m-d'));
+      $ga_manager = new GoogleAnalyticsManager($analytics, $profile_id);
+      $yesterday_pageviews = $ga_manager->pageViewsForDates($yesterday->format('Y-m-d'), $yesterday->format('Y-m-d'));
       $yesterday_count_converter = new CountConverter($yesterday_pageviews, PAGEVIEWS_DISPLAY_IN_THOUSANDS);
       $yesterday_pageviews_output = $yesterday_count_converter->convertCount();
 
@@ -35,7 +36,7 @@ function create_digest(&$analytics) {
       $lastweek = new DateTime();
       $lastweek->sub(new DateInterval('P8D'));
 
-      $lastweek_pageviews = pageviews_for_dates($analytics, $profile_id, $lastweek->format('Y-m-d'), $lastweek->format('Y-m-d'));
+      $lastweek_pageviews = $ga_manager->pageViewsForDates($lastweek->format('Y-m-d'), $lastweek->format('Y-m-d'));
       $lastweek_count_converter = new CountConverter($lastweek_pageviews, PAGEVIEWS_DISPLAY_IN_THOUSANDS);
       $lastweek_pageviews_output = $lastweek_count_converter->convertCount();
 
@@ -63,18 +64,4 @@ function create_digest(&$analytics) {
   catch (Exception $e) {
     print 'There wan a general error : ' . $e->getMessage();
   }
-}
-
-/**
- * Retrieve page views for dates.
- */
-function pageviews_for_dates(&$analytics, $profile_id, $start_date, $end_date) {
-  $result = $analytics->data_ga->get(
-    'ga:' . $profile_id,
-    $start_date,
-    $end_date,
-    'ga:pageviews'
-  );
-
-  return $result->rows[0][0];
 }

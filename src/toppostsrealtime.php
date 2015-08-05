@@ -66,6 +66,8 @@ function total_active_users(&$analytics, $profile_id) {
 
 /**
  * Page path.
+ *
+ * @todo Move to GoogleAnalyticsManager class.
  */
 function page_path(&$analytics, $profile_id) {
   $result = $analytics->data_realtime->get(
