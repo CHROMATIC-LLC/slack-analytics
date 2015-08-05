@@ -6,7 +6,7 @@
  */
 
 // @TODO: Why does auto-loading not work?
-include_once '../src/CountConverter.php';
+include_once __DIR__ . '/../src/CountConverter.php';
 
 /**
  * CountConverterTest unit tests.

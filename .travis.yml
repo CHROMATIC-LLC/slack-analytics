@@ -7,6 +7,7 @@ before_script:
 - composer install
 script:
 - "./vendor/bin/phpcs --standard=./vendor/drupal/coder/coder_sniffer/Drupal/ --extensions='php' --ignore=Google/*,google-api-php-client/*,*vendor/*"
+- "./vendor/bin/phpunit tests/"
 notifications:
   email:
     on_success: change
