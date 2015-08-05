@@ -1,27 +1,32 @@
 <?php
 
+/**
+ * @file
+ * Daily Digest.
+ */
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include_once('autoload.php');
-include_once('setup.php');
-include_once('functions.php');
+include_once 'autoload.php';
+include_once 'setup.php';
+include_once 'functions.php';
 
-createDigest($analytics);
+create_digest($analytics);
 
-function createDigest(&$analytics) {
+/**
+ * Create digest.
+ */
+function create_digest(&$analytics) {
   try {
-
     // Step 2. Get the user's first view (profile) ID.
-    $profileId = GOOGLE_ANALYTICS_PROFILE_ID;
+    $profile_id = GOOGLE_ANALYTICS_PROFILE_ID;
 
-    if (isset($profileId)) {
-
+    if (isset($profile_id)) {
       $yesterday = new DateTime();
       $yesterday->sub(new DateInterval('P1D'));
 
-      $yesterday_pageviews = pageviewsForDates($analytics, $profileId, $yesterday->format('Y-m-d'), $yesterday->format('Y-m-d'));
+      $yesterday_pageviews = pageviews_for_dates($analytics, $profile_id, $yesterday->format('Y-m-d'), $yesterday->format('Y-m-d'));
       $yesterday_count_converter = new CountConverter($yesterday_pageviews, PAGEVIEWS_DISPLAY_IN_THOUSANDS);
       $yesterday_pageviews_output = $yesterday_count_converter->convertCount();
 
@@ -30,7 +35,7 @@ function createDigest(&$analytics) {
       $lastweek = new DateTime();
       $lastweek->sub(new DateInterval('P8D'));
 
-      $lastweek_pageviews = pageviewsForDates($analytics, $profileId, $lastweek->format('Y-m-d'), $lastweek->format('Y-m-d'));
+      $lastweek_pageviews = pageviews_for_dates($analytics, $profile_id, $lastweek->format('Y-m-d'), $lastweek->format('Y-m-d'));
       $lastweek_count_converter = new CountConverter($lastweek_pageviews, PAGEVIEWS_DISPLAY_IN_THOUSANDS);
       $lastweek_pageviews_output = $lastweek_count_converter->convertCount();
 
@@ -42,29 +47,34 @@ function createDigest(&$analytics) {
         $message .= ".";
       }
       else {
-        $message .= " (" . ($yesterday_pageviews - $lastweek_pageviews > 1000 ? "+" : "" ) . floor(($yesterday_pageviews - $lastweek_pageviews) / 1000) . "k).";
+        $message .= " (" . ($yesterday_pageviews - $lastweek_pageviews > 1000 ? "+" : "") . floor(($yesterday_pageviews - $lastweek_pageviews) / 1000) . "k).";
       }
 
       // Step 4. Output the results.
-      // slackMessage($message, SLACK_NOTIFICATION_CHANNEL);
+      slack_message($message, SLACK_NOTIFICATION_CHANNEL);
     }
 
-  } catch (apiServiceException $e) {
+  }
+  catch (apiServiceException $e) {
     // Error from the API.
     print 'There was an API error : ' . $e->getCode() . ' : ' . $e->getMessage();
 
-  } catch (Exception $e) {
+  }
+  catch (Exception $e) {
     print 'There wan a general error : ' . $e->getMessage();
   }
 }
 
-function pageviewsForDates(&$analytics, $profileId, $start_date, $end_date) {
-   $result = $analytics->data_ga->get(
-     'ga:' . $profileId,
-     $start_date,
-     $end_date,
-     'ga:pageviews'
-     );
+/**
+ * Retrieve page views for dates.
+ */
+function pageviews_for_dates(&$analytics, $profile_id, $start_date, $end_date) {
+  $result = $analytics->data_ga->get(
+    'ga:' . $profile_id,
+    $start_date,
+    $end_date,
+    'ga:pageviews'
+  );
 
-   return $result->rows[0][0];
+  return $result->rows[0][0];
 }
