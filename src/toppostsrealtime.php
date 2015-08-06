@@ -8,6 +8,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+include_once 'autoload.php';
 include_once 'setup.php';
 include_once 'functions.php';
 
@@ -18,11 +19,12 @@ create_digest($analytics);
  */
 function create_digest(&$analytics) {
   try {
-    // Step 2. Get the user's first view (profile) ID.
+    // Get the user's first view (profile) ID.
     $profile_id = GOOGLE_ANALYTICS_PROFILE_ID;
 
     if (isset($profile_id)) {
-      $total_active_users = total_active_users($analytics, $profile_id);
+      $ga_manager = new GoogleAnalyticsManager($analytics, $profile_id);
+      $total_active_users = $ga_manager->currentActiveUsers();
 
       $page_paths = page_path($analytics, $profile_id);
 
@@ -39,7 +41,7 @@ function create_digest(&$analytics) {
 
       $message = "Current users on the site: <https://www.google.com/analytics/web/?hl=en#realtime/rt-overview/" . GOOGLE_ANALYTICS_WEB_ID . "/|$total_active_users>\n\nTop posts:\n" . $top_posts;
 
-      // Step 4. Output the results.
+      // Output the results.
       slack_message($message, SLACK_NOTIFICATION_CHANNEL);
     }
   }
@@ -50,18 +52,6 @@ function create_digest(&$analytics) {
   catch (Exception $e) {
     print 'There was a general error : ' . $e->getMessage();
   }
-}
-
-/**
- * Total active users.
- */
-function total_active_users(&$analytics, $profile_id) {
-  $result = $analytics->data_realtime->get(
-    'ga:' . $profile_id,
-    'rt:activeUsers'
-  );
-
-  return $result->rows[0][0];
 }
 
 /**

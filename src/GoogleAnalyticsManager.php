@@ -57,7 +57,36 @@ class GoogleAnalyticsManager {
       'ga:pageviews'
     );
 
-    return $result->rows[0][0];
+    return $this->parseGoogleAnalyticsQueryResult($result);
+  }
+
+  /**
+   * Retrieve current active user count.
+   *
+   * @return int
+   *   The number of current active users.
+   */
+  public function currentActiveUsers() {
+    $result = $this->analytics->data_realtime->get(
+      'ga:' . $this->profileId,
+      'rt:activeUsers'
+    );
+
+    return $this->parseGoogleAnalyticsQueryResult($result);
+  }
+
+  /**
+   * Parse query result from Google_Collection sub-class.
+   *
+   * @param Google_Collection $result
+   *   Result object that is a sub-class of Google_Collection object: either
+   *   Google_Service_Analytics_GaData or Google_Service_Analytics_RealtimeData.
+   *
+   * @return int
+   *   The result value.
+   */
+  private function parseGoogleAnalyticsQueryResult(Google_Collection $result) {
+    return isset($result->rows[0][0]) ? intval($result->rows[0][0]) : 0;
   }
 
 }
