@@ -1,0 +1,12 @@
+{
+    "require-dev": {
+        "squizlabs/PHP_CodeSniffer": "2.*",
+        "phpunit/phpunit": "4.7.*",
+        "drupal/coder": "8.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "SlackAnalytics\\": ["src/"]
+        }
+    }
+}

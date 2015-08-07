@@ -1,5 +1,7 @@
 # Google Analytics Slack notifications
 
+[![Build Status](https://travis-ci.org/CHROMATIC-LLC/slack-analytics.svg)](https://travis-ci.org/CHROMATIC-LLC/slack-analytics)
+
 ## Setup
 
 ###Enable the Google Analytics API
